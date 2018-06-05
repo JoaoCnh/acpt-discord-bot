@@ -6,6 +6,9 @@
   "author": "João Cunha",
   "license": "MIT",
   "private": true,
+  "scripts": {
+    "start": "node bot.js"
+  },
   "dependencies": {
     "discord.io": "github:woor/discord.io#gateway_v6",
     "dotenv": "^6.0.0",

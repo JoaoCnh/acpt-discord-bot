@@ -54,3 +54,8 @@ bot.on("message", function(user, userid, channelID, message, event) {
 });
 
 bot.connect();
+
+// fix for zeit now
+require("http")
+  .createServer()
+  .listen(3000);

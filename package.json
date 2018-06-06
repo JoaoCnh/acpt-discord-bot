@@ -10,8 +10,18 @@
     "start": "node bot.js"
   },
   "dependencies": {
-    "discord.io": "github:woor/discord.io#gateway_v6",
+    "bufferutil": "^3.0.5",
+    "discord.js": "^11.3.2",
     "dotenv": "^6.0.0",
-    "winston": "^2.4.2"
+    "erlpack": "github:hammerandchisel/erlpack",
+    "ffmpeg-binaries": "^3.2.2-3",
+    "install": "^0.11.0",
+    "isomorphic-fetch": "^2.2.1",
+    "npm": "^6.1.0",
+    "opusscript": "0.0.6",
+    "query-string": "^6.1.0",
+    "uws": "^10.148.0",
+    "winston": "^2.4.2",
+    "ytdl-core": "^0.20.4"
   }
 }

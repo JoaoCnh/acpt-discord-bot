@@ -31,7 +31,7 @@ const handleCommand = async ({ channel, content }) => {
       break;
     case "maxim":
       channel.send(
-        `Nothing is true. Everything is permitted. :aclogo: :smile: \nTo say that nothing is true, is to realize that the foundations of society are fragile, and that we must be the shepherds of our own civilization.\nTo say that everything is permitted, is to understand that we are the architects of our actions, and that we must live with their consequences, whether glorious or tragic.`
+        `Nothing is true. Everything is permitted. :aclogo:\nTo say that nothing is true, is to realize that the foundations of society are fragile, and that we must be the shepherds of our own civilization.\nTo say that everything is permitted, is to understand that we are the architects of our actions, and that we must live with their consequences, whether glorious or tragic.`
       );
       break;
     case "gif":
@@ -45,7 +45,7 @@ const handleCommand = async ({ channel, content }) => {
       break;
     case "help":
       channel.send(
-        `:aclogo: **O Nikolai está aqui para ajudar!** :aclogo: \n\n :warn2: __**Comandos disponíveis:**__ :warn2: \n\n :aclogo: **!tenets** - Relembro-te dos 3 princípios dos Assassinos.\n\n:aclogo: **!ironies** - Relembro-te das 3 ironias dos princípios dos Assassinos.\n\n:aclogo: **!maxim** - Relembro-te da máxima dos Assassinos.\n\n:aclogo: **!gif** - Dou-te um GIF relacionado com Assassin's Creed.\n\n:aclogo: **!soundtracks** - Apresento-te as soundtracks disponíveis para ouvires num canal de voz.\n\n------------------------------\n\n:warn2: __**Execuções disponíveis:**__ :warn2:\n\n:aclogo: **/play [soundtrack] @ [voice channel]** - Começa a tocar a soundtrack escolhida no canal de voz escolhido.\n\n:aclogo: **/stfu** - Para qualquer música que esteja a ser tocada.\n\n:warn1: __**Qualquer problema deve ser comunicado ao Mentor ou a Master Assassins! Obrigado :smile:**__`
+        `:aclogo: **O Nikolai está aqui para ajudar!** :aclogo: \n\n :warn2: __**Comandos disponíveis:**__ :warn2: \n\n :aclogo: **!tenets** - Relembro-te dos 3 princípios dos Assassinos.\n\n:aclogo: **!ironies** - Relembro-te das 3 ironias dos princípios dos Assassinos.\n\n:aclogo: **!maxim** - Relembro-te da máxima dos Assassinos.\n\n:aclogo: **!gif** - Dou-te um GIF relacionado com Assassin's Creed.\n\n:aclogo: **!soundtracks** - Apresento-te as soundtracks disponíveis para ouvires num canal de voz.\n\n------------------------------\n\n:warn2: __**Execuções disponíveis:**__ :warn2:\n\n:aclogo: **/play [soundtrack] @ [voice channel]** - Começa a tocar a soundtrack escolhida no canal de voz escolhido.\n\n:aclogo: **/stfu** - Para qualquer música que esteja a ser tocada.\n\n:warn1: __**Qualquer problema deve ser comunicado ao Mentor ou a Master Assassins! Obrigado**__`
       );
       break;
     case "soundtracks":
@@ -74,7 +74,7 @@ const handleMusicRequest = async (match, { channel }) => {
   );
 
   if (!voiceChannel) {
-    return channel.send("Esse canal não existe!");
+    return channel.send(":warn1: Esse canal não existe!");
   }
 
   try {
@@ -85,7 +85,7 @@ const handleMusicRequest = async (match, { channel }) => {
 
     if (!ytUrl) {
       return channel.send(
-        "Não conheço essa soundtrack. Utiliza o comando !soundtracks para ver as disponíveis!"
+        ":warn1: Não conheço essa soundtrack. Utiliza o comando !soundtracks para ver as disponíveis!"
       );
     }
 
@@ -96,11 +96,11 @@ const handleMusicRequest = async (match, { channel }) => {
     channel.send("Boa escolha!");
   } catch (error) {
     console.log(error);
-    channel.send("Tive um problema ao carregar a música!");
+    channel.send(":warn1: Tive um problema ao carregar a música!");
   }
 };
 
-handleStfu = () => {
+const handleStfu = () => {
   if (!currentVoiceChannel) {
     return;
   }
@@ -110,10 +110,28 @@ handleStfu = () => {
   currentVoiceChannel = null;
 };
 
+const handleTeamSet = (match, { author, member, channel }) => {
+  // sacar info da match
+  const team = match[1];
+
+  const role = channel.guild.roles.find(
+    role => role.name.toLowerCase() === team.toLowerCase()
+  );
+
+  if (!role) {
+    return channel.send(":warn1: Essa não existe!");
+  }
+
+  member.addRole(role.id);
+
+  channel.send(`:warn2: ${author.username} - ${role.name}!`);
+};
+
 const bot = new Discord.Client();
 
 bot.on("ready", () => {
   logger.info(`BOT is Connected!`);
+  bot.user.setActivity("Try !help", { type: "PLAYING" });
 });
 
 bot.on("message", message => {
@@ -122,6 +140,7 @@ bot.on("message", message => {
   const isCommand = content.substring(0, 1) === "!";
   const isPlayMusic = content.match(/\/play (.+) @ (.+)$/);
   const isStfu = content.match(/\/stfu$/);
+  const isTeamSet = content.match(/\/iam (.+)/);
 
   if (isCommand) {
     return handleCommand(message);
@@ -133,6 +152,10 @@ bot.on("message", message => {
 
   if (isStfu) {
     return handleStfu();
+  }
+
+  if (isTeamSet) {
+    return handleTeamSet(isTeamSet, message);
   }
 });
 

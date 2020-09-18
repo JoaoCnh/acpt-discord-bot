@@ -8,7 +8,7 @@ const soundtracks = require("./src/soundtracks.json");
 
 logger.remove(logger.transports.Console);
 logger.add(logger.transports.Console, {
-  colorize: true
+  colorize: true,
 });
 logger.level = "debug";
 
@@ -45,17 +45,17 @@ const handleCommand = async ({ channel, content }) => {
       break;
     case "help":
       channel.send(
-        `:aclogo: **O Nikolai está aqui para ajudar!** :aclogo: \n\n :warn2: __**Comandos disponíveis:**__ :warn2: \n\n :aclogo: **!tenets** - Relembro-te dos 3 princípios dos Assassinos.\n\n:aclogo: **!ironies** - Relembro-te das 3 ironias dos princípios dos Assassinos.\n\n:aclogo: **!maxim** - Relembro-te da máxima dos Assassinos.\n\n:aclogo: **!gif** - Dou-te um GIF relacionado com Assassin's Creed.\n\n:aclogo: **!soundtracks** - Apresento-te as soundtracks disponíveis para ouvires num canal de voz.\n\n------------------------------\n\n:warn2: __**Execuções disponíveis:**__ :warn2:\n\n:aclogo: **/play [soundtrack] @ [voice channel]** - Começa a tocar a soundtrack escolhida no canal de voz escolhido.\n\n:aclogo: **/stfu** - Para qualquer música que esteja a ser tocada.\n\n:warn1: __**Qualquer problema deve ser comunicado ao Mentor ou a Master Assassins! Obrigado**__`
+        `:aclogo: **Nikolai is here to help!** :aclogo: \n\n :warn2: __**Available Commands:**__ :warn2: \n\n :aclogo: **!tenets** - I tell you the 3 tenets of the creed.\n\n:aclogo: **!ironies** - I tell you the 3 ironies of the Assassin's Creed.\n\n:aclogo: **!maxim** - I tell you the Assassin's Creed Maxim.\n\n:aclogo: **!gif** - I'll give you an Assassin's Creed GIF.\n\n:aclogo: **!soundtracks** - I'll give you available soundtracks for you to listen to.\n\n------------------------------\n\n:warn2: __**Available executions:**__ :warn2:\n\n:aclogo: **/play [soundtrack] @ [voice channel]** - Starts the chosen soundtrack in the specified voice channel.\n\n:aclogo: **/stfu** - Any music playing in a voice channel is stopped.\n\n:warn1: __**Any problem please contact a mod or staff! Thank you**__`
       );
       break;
     case "soundtracks":
       channel.send(
-        `:aclogo: **Escolhe a tua soundtrack!** :aclogo:\n\nac - Soundtrack de Assassin's Creed\n\nac2 - Soundtrack de Assassin's Creed 2\n\nbrotherhood - Soundtrack de Assassin's Creed: Brotherhood\n\nrevelations - Soundtrack de Assassin's Creed: Revelations\n\nac3 - Soundtrack de Assassin's Creed 3\n\nblackflag - Soundtrack de Assassin's Creed IV: Black Flag\n\nunity - Soundtrack de Assasin's Creed: Unity\n\nrogue - Soundtrack de Assassin's Creed: Rogue\n\nsyndicate - Soundtrack de Assassin's Creed: Syndicate\n\norigins - Soundtrack de Assassin's Creed: Origins`
+        `:aclogo: **Choose your soundtrack!** :aclogo:\n\nac - Assassin's Creed Soundtrack\n\nac2 - Assassin's Creed 2 Soundtrack\n\nbrotherhood - Assassin's Creed: Brotherhood Soundtrack\n\nrevelations - Assassin's Creed: Revelations Soundtrack\n\nac3 - Assassin's Creed 3 Soundtrack\n\nblackflag - Assassin's Creed IV: Black Flag Soundtrack\n\nunity - Assassin's Creed: Unity Soundtrack\n\nrogue - Assassin's Creed: Rogue Soundtrack\n\nsyndicate - Assassin's Creed: Syndicate Soundtrack\n\norigins - Assassin's Creed: Origins Soundtrack`
       );
       break;
     default:
       channel.send(
-        "Não conheço esse comando... Tenta ver com o comando **!help** os disponíveis!"
+        "Can't recognize that command... Type **!help** to see every command available!"
       );
       break;
   }
@@ -70,11 +70,11 @@ const handleMusicRequest = async (match, { channel }) => {
 
   // vamos tentar encontrar o voice channel
   const voiceChannel = bot.channels.find(
-    ch => ch.type === "voice" && ch.name === voiceChannelName
+    (ch) => ch.type === "voice" && ch.name === voiceChannelName
   );
 
   if (!voiceChannel) {
-    return channel.send(":warn1: Esse canal não existe!");
+    return channel.send(":warn1: That warning does not exist!");
   }
 
   try {
@@ -85,7 +85,7 @@ const handleMusicRequest = async (match, { channel }) => {
 
     if (!ytUrl) {
       return channel.send(
-        ":warn1: Não conheço essa soundtrack. Utiliza o comando !soundtracks para ver as disponíveis!"
+        ":warn1: Don't know that soundtrack. Type !soundtracks to see which soundtracks are available!"
       );
     }
 
@@ -93,10 +93,10 @@ const handleMusicRequest = async (match, { channel }) => {
     conn.playStream(stream, streamOptions);
     // guardamos em memória lo bastardo! e notificamos.
     currentVoiceChannel = voiceChannel;
-    channel.send("Boa escolha!");
+    channel.send("Nice choice!");
   } catch (error) {
     console.log(error);
-    channel.send(":warn1: Tive um problema ao carregar a música!");
+    channel.send(":warn1: Had an issue loading the music!");
   }
 };
 
@@ -115,7 +115,7 @@ const handleTeamSet = (match, { author, member, channel }) => {
   const team = match[1];
 
   const role = channel.guild.roles.find(
-    role => role.name.toLowerCase() === team.toLowerCase()
+    (role) => role.name.toLowerCase() === team.toLowerCase()
   );
 
   if (!role) {
@@ -134,7 +134,7 @@ bot.on("ready", () => {
   bot.user.setActivity("Try !help", { type: "PLAYING" });
 });
 
-bot.on("message", message => {
+bot.on("message", (message) => {
   const { content } = message;
 
   const isCommand = content.substring(0, 1) === "!";
@@ -162,6 +162,4 @@ bot.on("message", message => {
 bot.login(process.env.BOT_TOKEN);
 
 // fix for zeit now
-require("http")
-  .createServer()
-  .listen(3000);
+require("http").createServer().listen(3000);

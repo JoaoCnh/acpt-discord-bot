@@ -162,4 +162,6 @@ bot.on("message", (message) => {
 bot.login(process.env.BOT_TOKEN);
 
 // fix for zeit now
-require("http").createServer().listen(3000);
+require("http")
+  .createServer()
+  .listen(process.env.PORT || 5000);
